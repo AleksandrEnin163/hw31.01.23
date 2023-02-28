@@ -1,0 +1,137 @@
+class Node {
+constructor(data, next = null) {
+this.data = data;
+this.next = next;
+}
+}
+
+class MyLinkedList {
+constructor() {
+this.head = null;
+this.tail = null;
+this.length = 0;
+}
+
+// добавляем элемент в конец списка
+push(data) {
+const node = new Node(data);
+if (!this.head) {
+this.head = node;
+this.tail = node;
+} else {
+this.tail.next = node;
+this.tail = node;
+}
+this.length++;
+}
+
+// добавляем элемент в начало списка
+unshift(data) {
+const node = new Node(data, this.head);
+this.head = node;
+if (!this.tail) {
+this.tail = node;
+}
+this.length++;
+}
+
+// удаляем первый элемент списка
+shift() {
+if (!this.head) {
+return null;
+}
+const currentHead = this.head;
+this.head = this.head.next;
+if (!this.head) {
+this.tail = null;
+}
+this.length--;
+return currentHead.data;
+}
+
+// удаляем последний элемент списка
+pop() {
+if (!this.tail) {
+return null;
+}
+if (this.head === this.tail) {
+return this.shift();
+}
+let current = this.head;
+let newTail = null;
+while (current.next) {
+newTail = current;
+current = current.next;
+}
+this.tail = newTail;
+this.tail.next = null;
+this.length--;
+return current.data;
+}
+
+// возвращает элемент по индексу
+get(index) {
+if (index < 0 || index >= this.length) {
+return null;
+}
+let current = this.head;
+let i = 0;
+while (i < index) {
+current = current.next;
+i++;
+}
+return current.data;
+}
+
+// добавляем элемент на указанную позицию
+pushToIndex(data, index) {
+if (index < 0 || index > this.length) {
+return false;
+}
+if (index === 0) {
+this.unshift(data);
+return true;
+}
+if (index === this.length) {
+this.push(data);
+return true;
+}
+const node = new Node(data);
+let current = this.head;
+let prev = null;
+let i = 0;
+while (i < index) {
+prev = current;
+current = current.next;
+i++;
+}
+node.next = current;
+prev.next = node;
+this.length++;
+return true;
+}
+
+// удаляем элемент по индексу
+removeByIndex(index) {
+if (index < 0 || index >= this.length) {
+return null;
+}
+if (index === 0) {
+return this.shift();
+}
+if (index === this.length - 1) {
+return this.pop();
+}
+let current = this.head;
+let prev = null;
+let i = 0;
+while (i < index) {
+prev = current;
+current = current.next;
+i++;
+}
+prev.next = current.next;
+this.length--;
+return current.data;
+}
+}
